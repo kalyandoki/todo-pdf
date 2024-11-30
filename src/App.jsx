@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { jsPDF } from "jspdf";
 import "tailwindcss/tailwind.css";
 
@@ -8,6 +8,17 @@ const App = () => {
   const [money, setMoney] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [currentTask, setCurrentTask] = useState(null);
+
+  useEffect(() => {
+    const storedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    console.log("Loaded tasks from localStorage:", storedTasks); // Debugging
+    setTasks(storedTasks);
+  }, []);
+
+  useEffect(() => {
+    console.log("Saving tasks to localStorage:", tasks); // Debugging
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
 
   const addTask = () => {
     if (name && money) {
